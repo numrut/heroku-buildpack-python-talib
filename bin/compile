@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+CACHE_DIR=$2
+
+source bin/utils
+
+TALIB=$(/app/.heroku/python/bin/python -c 'import pkgutil; print(1 if pkgutil.find_loader("talib") else 0)')
+if [ "$TALIB" -eq "0" ]; then
+  PYTHON=$(ls /app/.heroku/python/include | grep -m 1 python)
+
+  puts-step "Installing requirements with pip"
+  /app/.heroku/python/bin/pip install -r requirements.txt 2>&1 | cleanup | indent
+
+  puts-step "Installing TA-Lib library source code"
+  echo "Download & unpack..." | indent
+  wget -q http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz > /dev/null 2>&1
+  tar -xf ta-lib-0.4.0-src.tar.gz  && cd ta-lib > /dev/null 2>&1
+  echo "Compile..." | indent
+  ./configure --includedir=/app/.heroku/python/include/${PYTHON} --libdir=/app/.heroku/python/lib --bindir=/app/.heroku/python/bin > /dev/null 2>&1
+  make > /dev/null 2>&1
+  echo "Install..." | indent
+  make install > /dev/null 2>&1
+  echo "TA-Lib library successfully installed" | indent
+
+  /app/.heroku/python/bin/pip install TA-Lib 2>&1 | cleanup | indent
+
+  rm -rf $CACHE_DIR/.heroku/python/
+  cp -R /app/.heroku/python/ $CACHE_DIR/.heroku/
+fi
