@@ -7,4 +7,4 @@ if [ ! -f $BUILD_DIR/requirements.txt ] && [ ! -f $BUILD_DIR/setup.py ] && [ ! -
   exit 1
 fi
 
-echo Python
+echo "Python TA-Lib"
