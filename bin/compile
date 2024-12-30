@@ -22,7 +22,7 @@ if [ "$TALIB" -eq "0" ]; then
   make install > /dev/null 2>&1
   echo "TA-Lib library successfully installed" | indent
 
-  /app/.heroku/python/bin/pip install TA-Lib 2>&1 | cleanup | indent
+  /app/.heroku/python/bin/pip install TA-Lib==0.5.1 2>&1 | cleanup | indent
 
   rm -rf $CACHE_DIR/.heroku/python/
   cp -R /app/.heroku/python/ $CACHE_DIR/.heroku/
