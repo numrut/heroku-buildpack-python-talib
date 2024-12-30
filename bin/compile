@@ -13,7 +13,7 @@ if [ "$TALIB" -eq "0" ]; then
 
   puts-step "Installing TA-Lib library source code"
   echo "Download & unpack..." | indent
-  wget -q http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz > /dev/null 2>&1
+  wget -q https://github.com/TA-Lib/ta-lib/releases/download/v0.4.0/ta-lib-0.4.0-src.tar.gz > /dev/null 2>&1
   tar -xf ta-lib-0.4.0-src.tar.gz  && cd ta-lib > /dev/null 2>&1
   echo "Compile..." | indent
   ./configure --includedir=/app/.heroku/python/include/${PYTHON} --libdir=/app/.heroku/python/lib --bindir=/app/.heroku/python/bin > /dev/null 2>&1
